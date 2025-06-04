@@ -1,0 +1,78 @@
+#1. Baca data input dari git:
+#   Ubah nama file sesuai nama file input pada soal
+
+fileinput = 'databarang.csv'
+
+#url = 'https://raw.githubusercontent.com/flashjournal/datatest/main/input/' + fileinput
+url = 'https://raw.githubusercontent.com/flashcourse2025/data1/main/'+ fileinput
+
+import pandas as pd
+data_input2 = pd.read_csv(url)
+print(data_input2)
+
+print(data_input2['Jenis'])
+
+# 2. Menambahkan 2 kolom yaitu harga jual dan keuntungan.
+#    a. Harga jual dihitung berdasarkan jenis:
+#       - jika jenis 'A1' harga jual adalah harga beli + 10%
+#       - jika jenis 'A2' harga jual adalah harga beli + 12%
+#    b. keuntungan = harga jual - harga beli
+
+#inisialisasi variabel array untuk harga dan keuntungan (revenue)
+harga1 = []
+revenue = []
+
+#hitung harga jual dan revenue
+
+i = 0
+for row in data_input2['Jenis']:
+  if row == 'A1':
+    pengali = 1.1
+  elif row == 'A2':
+    pengali = 1.2
+  harga_beli = int(data_input2.loc[i]['Harga_beli'])
+  harga_jual =  round(harga_beli * pengali,2)
+  selisih = round(harga_jual - harga_beli,2)
+  #print(selisih)
+  harga1.append(harga_jual)
+  revenue.append(selisih)
+  i = i + 1
+
+print(revenue)
+
+print(harga1)
+
+# tambahkan kolom 'Harga_jual' dan 'Keuntungan' pada dataframe eksisting
+
+data_input2['Harga_jual'] = harga1
+data_input2['Keuntungan'] = revenue
+
+print(data_input2)
+
+# 3. Konversi data_input2 ke format csv
+
+data_output2 = data_input2.to_csv(index = False,lineterminator='\n',encoding='utf-8')
+print(data_output2
+
+#filename = 'output/tugas/penjualan_xxxxx_v2.csv'
+filename = 'output/penjualan.csv'
+daftar_file = cek_files()
+if filename in daftar_file:
+  contents = repo.get_contents(filename)
+  repo.update_file(contents.path, "committing files", data_output2, contents.sha, branch='main')
+  print('Replace existing file')
+else:
+  repo.create_file(filename, 'upload csv', data_output2, branch='main')
+  print('Create new file')
+
+# 5. Cek hasil
+filename = 'output/penjualan.csv'
+
+#url = 'https://raw.githubusercontent.com/flashjournal/datatest/main/' + filename
+url = 'https://raw.githubusercontent.com/flashcourse2025/data1/main/'+ filename
+
+import pandas as pd
+cek_output = pd.read_csv(url)
+print(cek_output)
+
+      
