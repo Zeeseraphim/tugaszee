@@ -1,0 +1,130 @@
+#kode asal
+#1. Baca data input dari git:
+#   Ubah nama file sesuai nama file input pada soal
+
+#fileinput = 'datamhs.csv'
+
+#url = 'https://raw.githubusercontent.com/flashjournal/datatest/main/input/' + fileinput
+
+#1. Baca data input dari git:
+#   Ubah nama file sesuai nama file input pada soal
+
+fileinput = 'datamhs.csv'
+
+url = 'https://raw.githubusercontent.com/flashcourse2025/data1/main/' + fileinput
+
+import pandas as pd
+data_input1 = pd.read_csv(url)
+print(data_input1)
+
+# memeriksa apakah elemen TGS1 baris ke 3 bernilai 'NaN'
+
+
+import numpy as np
+a = np.isnan(data_input1.loc[7]['TGS1'])
+if a == True:  #berisi NaN
+  print('nol')
+else:
+  print('not null')
+
+#fungsi utk cek tgs1, tgs2, tgs3, jika NaN --> diganti O
+
+import numpy as np
+
+def cek_isNan(baris):
+  cek_tgs1 = np.isnan(data_input1.loc[baris]['TGS1'])
+  cek_tgs2 = np.isnan(data_input1.loc[baris]['TGS2'])
+  cek_tgs3 = np.isnan(data_input1.loc[baris]['TGS3'])
+  if cek_tgs1 == True: tgs1 = 0
+  else: tgs1 = float(data_input1.loc[baris]['TGS1'])
+  if cek_tgs2 == True: tgs2 = 0
+  else: tgs2 = float(data_input1.loc[baris]['TGS2'])
+  if cek_tgs3 == True: tgs3 = 0
+  else: tgs3 = float(data_input1.loc[baris]['TGS3'])
+  rata = round((tgs1 + tgs2 + tgs3)/3,2)
+  return tgs1,tgs2,tgs3, rata
+
+#cek fungsi
+hasil = cek_isNan(7)
+print(hasil)
+
+# 2. Menambah kolom 'Nilai Akhir'
+
+na = []
+tgs1=[]
+tgs2=[]
+tgs3=[]
+
+i = 0
+for row in data_input1['NIM']:
+  #ambil isi datanya:
+  nim = data_input1.loc[i]['NIM']
+  nama = data_input1.loc[i]['NAMA']
+  uts = int(data_input1.loc[i]['UTS'])
+  uas = int(data_input1.loc[i]['UAS'])
+  ratatgs = cek_isNan(i)
+  print(i,ratatgs)
+  tgs1.append(ratatgs[0])
+  tgs2.append(ratatgs[1])
+  tgs3.append(ratatgs[2])
+  rata2tgs = ratatgs[3]
+  nilai = 0.3 * uts + 0.4 * uas + 0.3 * rata2tgs
+  na.append(round(nilai,2))
+  i = i + 1
+
+# cek hasil perhitungan nilai akhir
+print(na)
+
+print(data_input1)
+
+# tambahkan kolom nilai akhir pada dataframe data_input1
+
+data_input1['N_AKHIR'] = na
+data_input1['TGS1']= tgs1
+data_input1['TGS2']= tgs2
+data_input1['TGS3']= tgs3
+
+print(data_input1)
+
+# tambahkan kolom nilai akhir pada dataframe data_input1
+
+data_input1['N_AKHIR'] = na
+data_input1['TGS1']= tgs1
+data_input1['TGS2']= tgs2
+data_input1['TGS3']= tgs3
+
+print(data_input1)
+
+# 3. Konversi dataframe data_input1 menjadi file csv
+data_output1 = data_input1.to_csv(index = False,lineterminator='\n',encoding='utf-8')
+print(data_output1)
+
+#contoh repo lama
+#filename = 'output/tugas/datanilai_xxxxx_v2.csv'
+
+#repo baru di flashcourse2025
+filename = 'output/datanilaiv2.csv'
+daftar_file = cek_files()
+if filename in daftar_file:
+  print('Replace existing file')
+  contents = repo.get_contents(filename)
+  repo.update_file(contents.path, "committing files", data_output1, contents.sha, branch='main')
+else:
+  print('create new file')
+  repo.create_file(filename, 'upload csv', data_output1, branch='main')
+
+# 5. Cek hasil
+
+#contoh repo lama
+#filename = 'output/tugas/datanilai_xxxxx_v2.csv'
+#url = 'https://raw.githubusercontent.com/flashjournal/datatest/main/' + filename
+
+#repo baru di flashcourse2025
+filename = 'output/datanilaiv2.csv'
+
+
+url = 'https://raw.githubusercontent.com/flashcourse2025/data1/main/' + filename
+
+import pandas as pd
+cek_output = pd.read_csv(url)
+print(cek_output)
