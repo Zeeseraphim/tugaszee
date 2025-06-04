@@ -1,1 +1,7 @@
+#@title Identitas:
+Nim = '2406344044' #@param {type:"string"}
+Nama = 'Zefanya Seraphim Rompis' #@param {type:"string"}
+Kelas = '24A' #@param ["24A", "24B","24C"] {allow-input: true}
+data_mhsw= (Nim, Nama, Kelas)
 
+print(data_mhsw)
